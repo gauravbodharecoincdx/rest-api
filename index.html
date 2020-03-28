@@ -1389,7 +1389,9 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
 
-<span class="n">body</span> <span class="o">=</span> <span class="p">{</span><span class="s">"orders"</span><span class="p">:[</span>
+<span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">"orders"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="p">{</span>
     <span class="s">"side"</span><span class="p">:</span> <span class="s">"buy"</span><span class="p">,</span>  <span class="c">#Toggle between 'buy' or 'sell'.</span>
     <span class="s">"order_type"</span><span class="p">:</span> <span class="s">"limit_order"</span><span class="p">,</span> <span class="c">#Toggle between a 'market_order' or 'limit_order'.</span>
     <span class="s">"market"</span><span class="p">:</span> <span class="s">"SNTBTC"</span><span class="p">,</span> <span class="c">#Replace 'SNTBTC' with your desired market pair.</span>
@@ -1397,8 +1399,8 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
     <span class="s">"total_quantity"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="c">#Replace this with the quantity you want</span>
     <span class="s">"timestamp"</span><span class="p">:</span> <span class="n">timeStamp</span><span class="p">,</span>
     <span class="s">"ecode"</span><span class="p">:</span> <span class="s">"I"</span>
-  <span class="p">],</span>
-  <span class="p">[</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
     <span class="s">"side"</span><span class="p">:</span> <span class="s">"buy"</span><span class="p">,</span>  <span class="c">#Toggle between 'buy' or 'sell'.</span>
     <span class="s">"order_type"</span><span class="p">:</span> <span class="s">"limit_order"</span><span class="p">,</span> <span class="c">#Toggle between a 'market_order' or 'limit_order'.</span>
     <span class="s">"market"</span><span class="p">:</span> <span class="s">"SNTBTC"</span><span class="p">,</span> <span class="c">#Replace 'SNTBTC' with your desired market pair.</span>
@@ -1406,6 +1408,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
     <span class="s">"total_quantity"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="c">#Replace this with the quantity you want</span>
     <span class="s">"timestamp"</span><span class="p">:</span> <span class="n">timeStamp</span><span class="p">,</span>
     <span class="s">"ecode"</span><span class="p">:</span> <span class="s">"I"</span>
+    <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
 
