@@ -903,8 +903,9 @@ Other Terms:
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -920,7 +921,7 @@ Other Terms:
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/create"</span>
 
@@ -1016,8 +1017,9 @@ You must replace <code>your-api-key</code> and <code>signature</code> with your 
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -1028,7 +1030,7 @@ You must replace <code>your-api-key</code> and <code>signature</code> with your 
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/users/balances"</span>
 
@@ -1106,8 +1108,9 @@ You must replace <code>your-api-key</code> and <code>signature</code> with your 
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -1118,7 +1121,7 @@ You must replace <code>your-api-key</code> and <code>signature</code> with your 
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/users/info"</span>
 
@@ -1228,8 +1231,9 @@ You must replace <code>your-api-key</code> and <code>signature</code> with your 
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -1245,7 +1249,7 @@ You must replace <code>your-api-key</code> and <code>signature</code> with your 
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/create"</span>
 
@@ -1387,8 +1391,9 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -1418,7 +1423,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/create_multiple"</span>
 
@@ -1569,8 +1574,9 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -1582,7 +1588,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/status"</span>
 
@@ -1685,8 +1691,9 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -1698,7 +1705,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/status_multiple"</span>
 
@@ -1803,8 +1810,9 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -1817,7 +1825,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/active_orders"</span>
 
@@ -2052,8 +2060,9 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -2066,7 +2075,7 @@ Use this endpoint to fetch trades associated with your account</p>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/active_orders_count"</span>
 
@@ -2162,8 +2171,9 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -2176,7 +2186,7 @@ Use this endpoint to fetch trades associated with your account</p>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/cancel_all"</span>
 
@@ -2280,8 +2290,9 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -2292,7 +2303,7 @@ Use this endpoint to fetch trades associated with your account</p>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/cancel_by_ids"</span>
 
@@ -2374,8 +2385,9 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from CoinDCX website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -2387,7 +2399,7 @@ Use this endpoint to fetch trades associated with your account</p>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/orders/cancel"</span>
 
@@ -2481,8 +2493,9 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -2493,7 +2506,7 @@ Use this endpoint to fetch trades associated with your account</p>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/funding/fetch_orders"</span>
 
@@ -2599,8 +2612,9 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -2613,7 +2627,7 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="p">}</span>
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/funding/lend"</span>
 
@@ -2733,8 +2747,9 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from CoinDCX website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -2746,7 +2761,7 @@ Use this endpoint to fetch trades associated with your account</p>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/funding/settle"</span>
 
@@ -2886,8 +2901,9 @@ Set ecode parameter to <code>B</code> for all the api calls wherever necessary
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -2905,7 +2921,7 @@ Set ecode parameter to <code>B</code> for all the api calls wherever necessary
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/create"</span>
 
@@ -3115,8 +3131,9 @@ init, partial_entry, or triggered</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -3128,7 +3145,7 @@ init, partial_entry, or triggered</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/cancel"</span>
 
@@ -3228,8 +3245,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from CoinDCX website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -3241,7 +3259,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/exit"</span>
 
@@ -3341,8 +3359,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -3355,7 +3374,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/edit_target"</span>
 
@@ -3460,8 +3479,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -3475,7 +3495,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/edit_price_of_target_order"</span>
 
@@ -3589,8 +3609,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -3603,7 +3624,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/edit_sl"</span>
 
@@ -3708,8 +3729,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -3722,7 +3744,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/edit_trailing_sl"</span>
 
@@ -3825,8 +3847,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -3839,7 +3862,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/add_margin"</span>
 
@@ -3942,8 +3965,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -3956,7 +3980,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/remove_margin"</span>
 
@@ -4061,8 +4085,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -4075,7 +4100,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/fetch_orders"</span>
 
@@ -4280,8 +4305,9 @@ open or partial_close</aside>
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="c"># Enter your API Key and Secret here. If you don't have one, you can generate it from the website.</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">""</span>
-<span class="n">secret</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
 <span class="c"># Generating a timestamp.</span>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
@@ -4294,7 +4320,7 @@ open or partial_close</aside>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
 
-<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.coindcx.com/exchange/v1/margin/order"</span>
 
@@ -4632,12 +4658,13 @@ open or partial_close</aside>
 
 <span class="n">sio</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">socketEndpoint</span><span class="p">,</span> <span class="n">transports</span> <span class="o">=</span> <span class="s">'websocket'</span><span class="p">)</span>
 
-<span class="n">secret</span> <span class="o">=</span> <span class="s">'secret'</span>
-<span class="n">key</span> <span class="o">=</span> <span class="s">'key'</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"XXXX"</span>
+<span class="n">secret</span> <span class="o">=</span> <span class="s">"YYYY"</span>
+<span class="n">secret_bytes</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span>
 
-<span class="n">body</span><span class="o">=</span><span class="p">{</span><span class="s">"channel"</span><span class="p">:</span><span class="s">"coindcx"</span><span class="p">}</span>
-<span class="n">json_body</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
-<span class="n">signature</span><span class="o">=</span><span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret</span><span class="p">,</span> <span class="n">json_body</span><span class="p">,</span> <span class="n">digestmod</span><span class="o">=</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="n">body</span> <span class="o">=</span> <span class="p">{</span><span class="s">"channel"</span><span class="p">:</span><span class="s">"coindcx"</span><span class="p">}</span>
+<span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
+<span class="n">signature</span> <span class="o">=</span> <span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">secret_bytes</span><span class="p">,</span> <span class="n">json_body</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="c"># Join channel</span>
 <span class="n">sio</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s">'join'</span><span class="p">,</span> <span class="p">{</span> <span class="s">'channelName'</span><span class="p">:</span> <span class="s">'coindcx'</span><span class="p">,</span> <span class="s">'authSignature'</span><span class="p">:</span> <span class="n">signature</span><span class="p">,</span> <span class="s">'apiKey'</span> <span class="p">:</span> <span class="n">key</span> <span class="p">})</span>
