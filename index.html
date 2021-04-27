@@ -404,10 +404,10 @@
               </ul>
           </li>
           <li>
-            <a href="#high-frequency-trading" class="toc-h1 toc-link" data-title="high-frequency-trading">High-Frequency Trading</a>
+            <a href="#errors" class="toc-h1 toc-link" data-title="errors">Errors</a>
           </li>
           <li>
-            <a href="#errors" class="toc-h1 toc-link" data-title="errors">Errors</a>
+            <a href="#high-frequency-trading" class="toc-h1 toc-link" data-title="high-frequency-trading">High-Frequency Trading</a>
           </li>
       </div>
         <ul class="toc-footer">
@@ -2952,7 +2952,7 @@ Use this endpoint to fetch trades associated with your account</p>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s">"id"</span><span class="p">:</span> <span class="s">"ead19992-43fd-11e8-b027-bb815bcb14ed"</span><span class="p">,</span>  
+  <span class="s">"id"</span><span class="p">:</span> <span class="s">"ead19992-43fd-11e8-b027-bb815bcb14ed"</span><span class="p">,</span>
   <span class="s">"timestamp"</span><span class="p">:</span> <span class="n">timeStamp</span>
 <span class="p">}</span>
 
@@ -2987,7 +2987,7 @@ Use this endpoint to fetch trades associated with your account</p>
 
 
 <span class="nx">body</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"ead19992-43fd-11e8-b027-bb815bcb14ed"</span><span class="p">,</span> 
+  <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"ead19992-43fd-11e8-b027-bb815bcb14ed"</span><span class="p">,</span>
   <span class="s2">"timestamp"</span><span class="p">:</span> <span class="nx">timeStamp</span>
 <span class="p">}</span>
 
@@ -4558,8 +4558,8 @@ open or partial_close</aside>
 <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s">"details"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>  
-  <span class="s">"id"</span><span class="p">:</span> <span class="s">"30b5002f-d9c1-413d-8a8d-0fd32b054c9c"</span><span class="p">,</span> 
+  <span class="s">"details"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+  <span class="s">"id"</span><span class="p">:</span> <span class="s">"30b5002f-d9c1-413d-8a8d-0fd32b054c9c"</span><span class="p">,</span>
   <span class="s">"timestamp"</span><span class="p">:</span> <span class="n">timeStamp</span>
 <span class="p">}</span>
 
@@ -4594,8 +4594,8 @@ open or partial_close</aside>
 
 
 <span class="nx">body</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s2">"details"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>  
-  <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"30b5002f-d9c1-413d-8a8d-0fd32b054c9c"</span><span class="p">,</span> 
+  <span class="s2">"details"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"30b5002f-d9c1-413d-8a8d-0fd32b054c9c"</span><span class="p">,</span>
   <span class="s2">"timestamp"</span><span class="p">:</span> <span class="nx">timeStamp</span>
 <span class="p">}</span>
 
@@ -5132,14 +5132,6 @@ In aggregate, you may call `https//api.coindcx.com` not more than 10 times per s
 # API call limits
 We have rate limits in place to facilitate availability of our resources to a wider set of people. Typically you can place around 4 orders per second. The exact number depends on the server load.
 In aggregate, you may call `https//api.coindcx.com` not more than 10 times per second. -->
-<h1 id='high-frequency-trading'>High-Frequency Trading</h1>
-<p>CoinDCX’s API for High-Frequency Trading (HFT)</p>
-
-<aside class="notice">The base URL for all HFT API calls is `https://hft-api.coindcx.com`.</aside>
-
-<p>CoinDCX provides special access to our HFT APIs for enterprise and specialized clients. These APIs will enable our clients to trade and receive market data with faster API responses and higher API rate limits.</p>
-
-<p>To receive this access, kindly contact our support team. Our team members will request you for a static IP address which we will keep as our Trusted IPs for HFT. Once your IP address has been added as ‘Trusted’, you will receive the required access to our HFT API services.</p>
 <h1 id='errors'>Errors</h1>
 <!---->
 
@@ -5182,6 +5174,22 @@ In aggregate, you may call `https//api.coindcx.com` not more than 10 times per s
 <td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
 </tr>
 </tbody></table>
+<h1 id='high-frequency-trading'>High-Frequency Trading</h1>
+<!---->
+
+<!--<aside class="notice">-->
+
+<!--This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.-->
+
+<!--</aside>-->
+
+<p>CoinDCX’s API for High-Frequency Trading (HFT)</p>
+
+<aside class="notice">The base URL for all HFT API calls is `https://hft-api.coindcx.com`.</aside>
+
+<p>CoinDCX provides special access to our HFT APIs for enterprise and specialized clients. These APIs will enable our clients to trade and receive market data with faster API responses and higher API rate limits.</p>
+
+<p>To receive this access, kindly contact our support team. Our team members will request you for a static IP address which we will keep as our Trusted IPs for HFT. Once your IP address has been added as ‘Trusted’, you will receive the required access to our HFT API services.</p>
 
       </div>
       <div class="dark-box">
