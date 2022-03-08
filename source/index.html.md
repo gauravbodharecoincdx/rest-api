@@ -4804,3 +4804,61 @@ socket.on("bo-trade-update", (response) => {
 # API call limits
 We have rate limits in place to facilitate availability of our resources to a wider set of people. Typically you can place around 4 orders per second. The exact number depends on the server load.
 In aggregate, you may call `https//api.coindcx.com` not more than 10 times per second. -->
+
+
+## Spot ticker
+
+### Definitions
+<ul>
+  <li><strong>Channel:</strong> spot-ticker</li>
+  <li><strong>Event:</strong> spot-ticker</li>
+</ul>
+
+### Response
+<ul>
+  <li>market is the trading pair.</li>
+  <li>change_24_hour is price percentage change in last 24 hours.</li>
+  <li>high is 24 hour high.</li>
+  <li>low is 24 hour low.</li>
+  <li>volume is volume of the market in last 24 hours.</li>
+  <li>last_price is last traded price of the pair.</li>
+  <li>bid is highest bid offer in the orderbook.</li>
+  <li>ask is highest ask offer in the orderbook.</li>
+  <li>timestamp is time when was the ticker generated.</li>
+</ul>
+
+```python
+@sio.on('spot-ticker')
+def on_message(response):
+    print(response.data)
+```
+
+```javascript
+socket.on("spot-ticker", (response) => {
+  console.log(response.data);
+});
+```
+
+
+> Spot Ticker update response:
+
+```json
+[{
+  "market": "ONEUSDT",
+  "change_24_hour": "4.424",
+  "high": "0.16727000",
+  "low": "0.15369000",
+  "volume": "54029431.28313300",
+  "last_price": "0.16168000",
+  "bid": "0.16168000",
+  "ask": "0.16169000",
+  "timestamp": 1646203088
+}]
+```
+<!-- ------------------- END Sockets ---------------------- -->
+
+<!--
+
+# API call limits
+We have rate limits in place to facilitate availability of our resources to a wider set of people. Typically you can place around 4 orders per second. The exact number depends on the server load.
+In aggregate, you may call `https//api.coindcx.com` not more than 10 times per second. -->
