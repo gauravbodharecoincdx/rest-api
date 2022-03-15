@@ -582,7 +582,7 @@ The User hereby understands and acknowledges that rates/ charges/ fees may diffe
 <ul>
 <li><code>target currency</code> refers to the asset that is the <code>quantity</code> of a symbol.</li>
 <li><code>base currency</code> refers to the asset that is the <code>price</code> of a symbol.</li>
-<li><code>pair</code> uniquely idenfies the market along with it&#39;s exchange, and is available in market details api.</li>
+<li><code>pair</code> uniquely identifies the market along with its exchange, and is available in market details api.</li>
 <li><code>ecode</code> is used to specify the exchange for the given market. Valid values for ecode include:
 
 <ul>
@@ -591,6 +591,7 @@ The User hereby understands and acknowledges that rates/ charges/ fees may diffe
 <li><code>HB</code>: HitBTC</li>
 <li><code>H</code>: Huobi</li>
 <li><code>BM</code>: BitMEX</li>
+<li><code>OE</code>: OkEx</li>
 </ul></li>
 </ul>
 <h3 id='orders'>Orders</h3>
@@ -598,18 +599,26 @@ The User hereby understands and acknowledges that rates/ charges/ fees may diffe
 <li><code>status</code>: used to denote the current status of the given order. Valid values for status include:
 
 <ul>
-<li><code>init</code>: order is just created, but not placed in the orderbook</li>
+<li><code>init</code>: order is just created, but not placed in the orderbook (eg: stop-limit orders whose stop/trigger price hasn&#39;t reached)</li>
 <li><code>open</code>: order is successfully placed in the orderbook</li>
 <li><code>partially_filled</code>: order is partially filled</li>
 <li><code>filled</code>: order is completely filled</li>
 <li><code>partially_cancelled</code>: order is partially filled, but cancelled, thus inactive</li>
 <li><code>cancelled</code>: order is completely or partially cancelled</li>
-<li><code>rejected</code>: order is rejected (not placed on the exchange</li>
+<li><code>rejected</code>: order is rejected (not placed on the exchange)</li>
 </ul></li>
 </ul>
+
+<p>Among these, the open-equivalent status&#39; includes:
+<br/><code>init, open, partially_filled</code>
+<br/>Orders having any these status can undergo further change (like when they get filled or cancelled).</p>
+
+<p>And settled or closed-equivalent status&#39; includes:
+<br/><code>filled, partially_cancelled, cancelled, rejected</code>
+<br/> Orders having any of these status could not undergo any change.</p>
 <h3 id='margin-orders'>Margin Orders</h3>
 <ul>
-<li><p><code>status</code>: used to denote the current status of the given margin order. Valid values for status include:</p>
+<li><code>status</code>: used to denote the current status of the given margin order. Valid values for status include:
 
 <ul>
 <li><code>init</code>: order is just created, but not placed in the orderbook</li>
@@ -619,23 +628,34 @@ The User hereby understands and acknowledges that rates/ charges/ fees may diffe
 <li><code>cancelled</code>: order is completely cancelled</li>
 <li><code>rejected</code>: order is rejected (not placed on the exchange)</li>
 <li><code>close</code>: order is completely filled</li>
-<li><code>triggered</code>: stop varinat order triggered at specified stop price</li>
+<li><code>triggered</code>: stop variant order triggered at specified stop price</li>
 </ul></li>
-<li><p><code>order_type</code>: used to denote the type of order to be placed. Valid values for order_type includes:</p>
+</ul>
+
+<p><br/></p>
 
 <ul>
-<li><code>market_order</code>: in this order type we don&#39;t secify price; it is executed on the market price</li>
+<li><code>order_type</code>: used to denote the type of order to be placed. Valid values for order_type includes:
+
+<ul>
+<li><code>market_order</code>: in this order type we don&#39;t specify price; it is executed on the market price</li>
 <li><code>limit_order</code>: in this order type we specify the price on which order is to be executed</li>
 <li><code>stop_limit</code>: it is a type of limit order whether we specify stop price and a price, once price reaches stop_price, order is placed on the given price</li>
 <li><code>take_profit</code>: it is a type of limit order whether we specify stop price and a price, once price reaches stop_price, order is placed on the given price</li>
 </ul></li>
 </ul>
 
-<p>*
-Other Terms:
-  - <code>target_price</code>: The price at which the trader plans to buy/sell or close the order position is called the Target Price. When the Target price is hit, the trade is closed and the trader’s funds are settled according to the P&amp;L incurred. Target price feature is available if the trader checks the Bracket order checkbox.
-  - <code>sl_price</code>: The price at which the trader wishes to Stop Loss is the SL Price.
-  - <code>stop_price</code>: It is used in the Stop Variant order, to specify stop price</p>
+<p><br/></p>
+
+<ul>
+<li>Other Terms:
+
+<ul>
+<li><code>target_price</code>: The price at which the trader plans to buy/sell or close the order position is called the Target Price. When the Target price is hit, the trade is closed and the trader’s funds are settled according to the P&amp;L incurred. Target price feature is available if the trader checks the Bracket order checkbox.</li>
+<li><code>sl_price</code>: The price at which the trader wishes to Stop Loss is the SL Price.</li>
+<li><code>stop_price</code>: It is used in the Stop Variant order, to specify stop price</li>
+</ul></li>
+</ul>
 <h3 id='margin-internal-orders'>Margin Internal Orders</h3>
 <ul>
 <li><code>status</code> for internal orders: used to denote the type of internal orders. Valid values for order_type includes:
@@ -648,7 +668,7 @@ Other Terms:
 <li><code>cancelled</code>: order is completely cancelled</li>
 <li><code>rejected</code>: order is rejected (not placed on the exchange)</li>
 <li><code>partially_cancelled</code>: order is partially cancelled</li>
-<li><code>untriggered</code>: stop varinat order was not triggered</li>
+<li><code>untriggered</code>: stop variant order was not triggered</li>
 </ul></li>
 </ul>
 <h1 id='public-endpoints'>Public endpoints</h1><h2 id='ticker'>Ticker</h2><h3 id='http-request'>HTTP Request</h3>
@@ -1000,7 +1020,7 @@ Other Terms:
 <li><code>1M</code></li>
 </ul>
 <h1 id='authentication'>Authentication</h1>
-<aside class="warning">All the Authenticated API calls use POST method. Parameters are to be passed as JSON in the request body. Every request must contain a timestamp parameter of when the request was generated.</aside>
+<aside class="warning">Common Notes:<ul><li>All the Authenticated API calls use POST method.</li><li>Parameters are to be passed as JSON in the request body.</li><li>Every request must contain a timestamp parameter of when the request was generated. This timestamp is used to validate that the request is not a very old one (due to some lag in any layer) - the request is rejected with an appropriate error if this timestamp deviates too much from the server's time at which it is received to be processed.</li></ul></aside>
 
 <blockquote>
 <p>To authorize, use this code:</p>
@@ -1543,16 +1563,16 @@ You can only have a maximum of <strong>25 open orders</strong> at a time for one
 <td>Order Type</td>
 </tr>
 <tr>
-<td>timestamp</td>
-<td>Yes</td>
-<td>1524211224</td>
-<td>When was the request generated</td>
-</tr>
-<tr>
 <td>client_order_id</td>
 <td>No</td>
 <td>2022.02.14-btcinr_1</td>
 <td>Client order id of the order</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>Yes</td>
+<td>1524211224</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='create-multiple-orders'>Create multiple orders</h2>
@@ -1737,12 +1757,6 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>Order Type</td>
 </tr>
 <tr>
-<td>timestamp</td>
-<td>Yes</td>
-<td>1524211224</td>
-<td>When was the request generated</td>
-</tr>
-<tr>
 <td>ecode</td>
 <td>Yes</td>
 <td>I</td>
@@ -1753,6 +1767,12 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>No</td>
 <td>2022.02.14-btcinr_1</td>
 <td>Client order id of the order</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>Yes</td>
+<td>1524211224</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='order-status'>Order status</h2><pre class="highlight ruby tab-ruby"><code>
@@ -1873,7 +1893,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='multiple-order-status'>Multiple order status</h2><pre class="highlight ruby tab-ruby"><code>
@@ -1996,7 +2016,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='active-orders'>Active orders</h2><pre class="highlight ruby tab-ruby"><code>
@@ -2127,7 +2147,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='account-trade-history'>Account Trade history</h2><pre class="highlight ruby tab-ruby"><code>
@@ -2261,7 +2281,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='active-orders-count'>Active orders count</h2><pre class="highlight ruby tab-ruby"><code>
@@ -2376,7 +2396,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='cancel-all'>Cancel all</h2><pre class="highlight ruby tab-ruby"><code>
@@ -2491,7 +2511,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 
@@ -2706,7 +2726,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='edit-price'>Edit Price</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">hmac</span>
@@ -2833,7 +2853,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 
@@ -2960,7 +2980,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='lend'>Lend</h2><pre class="highlight ruby tab-ruby"><code>
@@ -3099,7 +3119,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='settle'>Settle</h2><pre class="highlight ruby tab-ruby"><code>
@@ -3223,7 +3243,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h1 id='margin-order'>Margin Order</h1>
@@ -3492,7 +3512,7 @@ You can only have a maximum of <strong>10 open orders</strong> at a time for one
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='cancel-order'>Cancel Order</h2>
@@ -3610,7 +3630,7 @@ init, partial_entry, or triggered</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='exit'>Exit</h2>
@@ -3729,7 +3749,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='edit-target'>Edit Target</h2>
@@ -3855,7 +3875,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='edit-price-of-target-order'>Edit Price of Target Order</h2><pre class="highlight ruby tab-ruby"><code>
@@ -3987,7 +4007,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='edit-sl-price'>Edit SL Price</h2>
@@ -4111,7 +4131,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='edit-sl-price-of-trailing-stop-loss'>Edit SL Price of Trailing Stop Loss</h2>
@@ -4235,7 +4255,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='add-margin'>Add Margin</h2><pre class="highlight ruby tab-ruby"><code>
@@ -4357,7 +4377,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='remove-margin'>Remove Margin</h2><pre class="highlight ruby tab-ruby"><code>
@@ -4479,7 +4499,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='fetch-orders-2'>Fetch Orders</h2>
@@ -4716,7 +4736,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='query-order'>Query Order</h2><pre class="highlight ruby tab-ruby"><code>
@@ -4884,7 +4904,7 @@ open or partial_close</aside>
 <td>number</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>When was the request generated</td>
+<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h1 id='pagination'>Pagination</h1>
@@ -5106,7 +5126,7 @@ open or partial_close</aside>
 <p>Trade response:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"T"</span><span class="p">:</span><span class="w"> </span><span class="mf">1545896665076.92</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"T"</span><span class="p">:</span><span class="w"> </span><span class="mi">1545896665076</span><span class="p">,</span><span class="w">
   </span><span class="s2">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9634e-4</span><span class="p">,</span><span class="w">
   </span><span class="s2">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="err">e</span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XRPBTC"</span><span class="p">,</span><span class="w">
@@ -5266,7 +5286,7 @@ open or partial_close</aside>
   </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XRPBTC"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"p"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.00009634"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"q"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"T"</span><span class="p">:</span><span class="w"> </span><span class="mf">1545896665076.92</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"T"</span><span class="p">:</span><span class="w"> </span><span class="mi">1545896665076</span><span class="p">,</span><span class="w">
   </span><span class="s2">"m"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
   </span><span class="s2">"f"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000000009634"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"e"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I"</span><span class="p">,</span><span class="w">
