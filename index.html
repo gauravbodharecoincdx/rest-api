@@ -1894,6 +1894,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
   <span class="s">"id"</span><span class="p">:</span> <span class="s">"ead19992-43fd-11e8-b027-bb815bcb14ed"</span><span class="p">,</span> <span class="c1"># Enter your Order ID here.
+</span>  <span class="c1"># "client_order_id": "2022.02.14-btcinr_1", # Enter your Client Order ID here.
 </span>  <span class="s">"timestamp"</span><span class="p">:</span> <span class="n">timeStamp</span>
 <span class="p">}</span>
 
@@ -1928,7 +1929,8 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 
 
 <span class="kd">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">qwd19992-43fd-14e8-b027-bb815bnb14ed</span><span class="dl">"</span><span class="p">,</span> <span class="c1">//Replace it with your Order ID.</span>
+    <span class="c1">// "id": "qwd19992-43fd-14e8-b027-bb815bnb14ed", //Replace it with your Order ID.</span>
+    <span class="dl">"</span><span class="s2">client_order_id</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">2022.02.14-btcinr_1</span><span class="dl">"</span><span class="p">,</span> <span class="c1">//Replace it with your Client Order ID.</span>
     <span class="dl">"</span><span class="s2">timestamp</span><span class="dl">"</span><span class="p">:</span> <span class="nx">timeStamp</span>
 <span class="p">}</span>
 
@@ -1954,6 +1956,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"ead19992-43fd-11e8-b027-bb815bcb14ed"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"client_order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022.02.14-btcinr_1"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"market"</span><span class="p">:</span><span class="s2">"TRXETH"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"order_type"</span><span class="p">:</span><span class="s2">"limit_order"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"side"</span><span class="p">:</span><span class="s2">"buy"</span><span class="p">,</span><span class="w">
@@ -1982,15 +1985,21 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 </thead><tbody>
 <tr>
 <td>id</td>
-<td>Yes</td>
+<td>No</td>
 <td>ead19992-43fd-11e8-b027-bb815bcb14ed</td>
 <td>The ID of the order</td>
+</tr>
+<tr>
+<td>client_order_id</td>
+<td>No</td>
+<td>2022.02.14-btcinr_1</td>
+<td>The Client Order ID of the order</td>
 </tr>
 <tr>
 <td>timestamp</td>
 <td>Yes</td>
 <td>1524211224</td>
-<td>Timestamp at which the request was generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
+<td>When was the request generated <a href="http://192.168.1.10:4567/#authentication">(see &#39;Common Notes&#39; under &#39;Authentication&#39; heading to read more)</a></td>
 </tr>
 </tbody></table>
 <h2 id='multiple-order-status'>Multiple order status</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code>
@@ -2014,8 +2023,9 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 </span><span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
 
 <span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s">"ids"</span><span class="p">:</span> <span class="p">[</span><span class="s">"8a2f4284-c895-11e8-9e00-5b2c002a6ff4"</span><span class="p">,</span> <span class="s">"8a1d1e4c-c895-11e8-9dff-df1480546936"</span><span class="p">],</span>
-  <span class="s">"timestamp"</span><span class="p">:</span> <span class="n">timeStamp</span>
+  <span class="c1"># "ids": ["8a2f4284-c895-11e8-9e00-5b2c002a6ff4", "8a1d1e4c-c895-11e8-9dff-df1480546936"], # Array of Order ids
+</span>  <span class="s">"client_order_ids"</span><span class="p">:</span> <span class="p">[</span><span class="s">"2022.02.14-btcinr_1"</span><span class="p">,</span> <span class="s">"2022.02.14-btcinr_2"</span><span class="p">],</span> <span class="c1"># Array of Client Order ids
+</span>  <span class="s">"timestamp"</span><span class="p">:</span> <span class="n">timeStamp</span>
 <span class="p">}</span>
 
 <span class="n">json_body</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">separators</span> <span class="o">=</span> <span class="p">(</span><span class="s">','</span><span class="p">,</span> <span class="s">':'</span><span class="p">))</span>
@@ -2049,7 +2059,8 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 
 
 <span class="kd">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="dl">"</span><span class="s2">ids</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">8a2f4284-c895-11e8-9e00-5b2c002a6ff4</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">8a1d1e4c-c895-11e8-9dff-df1480546936</span><span class="dl">"</span><span class="p">],</span>
+  <span class="dl">"</span><span class="s2">ids</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">8a2f4284-c895-11e8-9e00-5b2c002a6ff4</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">8a1d1e4c-c895-11e8-9dff-df1480546936</span><span class="dl">"</span><span class="p">],</span> <span class="c1">// Array of Order ids</span>
+  <span class="c1">// "client_order_ids": ["2022.02.14-btcinr_1", "2022.02.14-btcinr_2"], // Array of Client Order ids</span>
   <span class="dl">"</span><span class="s2">timestamp</span><span class="dl">"</span><span class="p">:</span> <span class="nx">timeStamp</span>
 <span class="p">}</span>
 
@@ -2076,6 +2087,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
     </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"ead19992-43fd-11e8-b027-bb815bcb14ed"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"client_order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022.02.14-btcinr_1"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"market"</span><span class="p">:</span><span class="s2">"TRXETH"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"order_type"</span><span class="p">:</span><span class="s2">"limit_order"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"side"</span><span class="p">:</span><span class="s2">"buy"</span><span class="p">,</span><span class="w">
@@ -2106,8 +2118,14 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <tr>
 <td>ids</td>
 <td>Yes</td>
-<td>[&quot;id1&quot;, &quot;id3&quot;]</td>
+<td>[&quot;ead19992-43fd-11e8-b027-bb815bcb14ed&quot;, &quot;8a1d1e4c-c895-11e8-9dff-df1480546936&quot;]</td>
 <td>Array of order IDs</td>
+</tr>
+<tr>
+<td>client_order_ids</td>
+<td>No</td>
+<td>[&quot;2022.02.14-btcinr_1&quot;, &quot;2022.02.14-btcinr_2&quot;]</td>
+<td>Array of client order IDs</td>
 </tr>
 <tr>
 <td>timestamp</td>
@@ -2201,6 +2219,7 @@ Multiple ordering API is only supported for CoinDCX INR markets. Set ecode param
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
     </span><span class="nl">"id"</span><span class="p">:</span><span class="s2">"ead19992-43fd-11e8-b027-bb815bcb14ed"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"client_order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022.02.14-btcinr_1"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"market"</span><span class="p">:</span><span class="s2">"TRXETH"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"order_type"</span><span class="p">:</span><span class="s2">"limit_order"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"side"</span><span class="p">:</span><span class="s2">"buy"</span><span class="p">,</span><span class="w">
