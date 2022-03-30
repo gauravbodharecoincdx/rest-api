@@ -4836,7 +4836,7 @@ open or partial_close</aside>
 <td>status</td>
 <td>string</td>
 <td>No</td>
-<td>init,open,close,rejected,cancelled,partial_entry,partial_close,triggered</td>
+<td>init,open,close,rejected,cancelled,<br/><br/>partial_entry,partial_close,triggered</td>
 <td>The status of the order, default: All orders</td>
 </tr>
 <tr>
@@ -5317,13 +5317,17 @@ open or partial_close</aside>
 <span class="kd">const</span> <span class="nx">payload</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">body</span><span class="p">)).</span><span class="nx">toString</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">signature</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">createHmac</span><span class="p">(</span><span class="dl">'</span><span class="s1">sha256</span><span class="dl">'</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">payload</span><span class="p">).</span><span class="nx">digest</span><span class="p">(</span><span class="dl">'</span><span class="s1">hex</span><span class="dl">'</span><span class="p">)</span>
 
-<span class="c1">//Join channel</span>
-<span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="dl">'</span><span class="s1">join</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-  <span class="dl">'</span><span class="s1">channelName</span><span class="dl">'</span><span class="p">:</span> <span class="dl">"</span><span class="s2">coindcx</span><span class="dl">"</span><span class="p">,</span>
-  <span class="dl">'</span><span class="s1">authSignature</span><span class="dl">'</span><span class="p">:</span> <span class="nx">signature</span><span class="p">,</span>
-  <span class="dl">'</span><span class="s1">apiKey</span><span class="dl">'</span> <span class="p">:</span> <span class="nx">key</span>
-<span class="p">});</span>
 
+
+<span class="c1">//Listen to connect event</span>
+<span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">connect</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+ <span class="c1">//Join channel</span>
+  <span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="dl">'</span><span class="s1">join</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="dl">'</span><span class="s1">channelName</span><span class="dl">'</span><span class="p">:</span> <span class="dl">"</span><span class="s2">coindcx</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">authSignature</span><span class="dl">'</span><span class="p">:</span> <span class="nx">signature</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">apiKey</span><span class="dl">'</span> <span class="p">:</span> <span class="nx">key</span>
+  <span class="p">});</span>
+<span class="p">});</span>
 
 <span class="c1">//Listen update on eventName</span>
 <span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">eventName</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -5373,7 +5377,8 @@ open or partial_close</aside>
 </ul>
 <h3 id='response-4'>Response</h3>
 <ul>
-  <li>o is client order id / system generated order id</li>
+  <li>o is system generated order id</li>
+  <li>c is client order id</li>
   <li>t is trade id</li>
   <li>s is symbol/market (LTCBTC)</li>
   <li>p is price</li>
@@ -5396,6 +5401,7 @@ open or partial_close</aside>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[{</span><span class="w">
   </span><span class="nl">"o"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28c58ee8-09ab-11e9-9c6b-8f2ae34ea8b0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"c"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022.02.14-btcinr_1"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="s2">"17105"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XRPBTC"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.00009634"</span><span class="p">,</span><span class="w">
@@ -5422,6 +5428,7 @@ In aggregate, you may call `https//api.coindcx.com` not more than 10 times per s
 <h3 id='response-5'>Response</h3>
 <ul>
 <li><code>id</code>: unique order identifier (uuid)</li>
+<li><code>client_order_id</code>: client order id of the order</li>
 <li><code>order_type</code>: the order type</li>
 <li><code>side</code>: whether the order is a buy order or a sell order</li>
 <li><code>status</code>: the current status</li>
@@ -5459,6 +5466,7 @@ In aggregate, you may call `https//api.coindcx.com` not more than 10 times per s
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
     </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"axxxxxxa-axxa-axxa-axxa-axxxxxxxxxxa"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"client_order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022.02.14-btcinr_1"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"order_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"limit_order"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"side"</span><span class="p">:</span><span class="w"> </span><span class="s2">"buy"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"open"</span><span class="p">,</span><span class="w">
