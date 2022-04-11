@@ -8,14 +8,20 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
+  - <a target="_blank" href='https://coindcx.com/api-dashboard'>Sign Up for a Developer Key</a>
+  - <a target="_blank" href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors
   - hft
 
 search: true
+
+code_clipboard: true
+
+meta:
+  - name: description
+    content: Documentation for the CoinDCX API
 ---
 # Terms and Conditions
 
@@ -153,24 +159,33 @@ You can get your API key and Secret as follows
 
 * `target currency` refers to the asset that is the `quantity` of a symbol.
 * `base currency` refers to the asset that is the `price` of a symbol.
-* `pair` uniquely idenfies the market along with it's exchange, and is available in market details api.
+* `pair` uniquely identifies the market along with its exchange, and is available in market details api.
 * `ecode` is used to specify the exchange for the given market. Valid values for ecode include:
   - `B`: Binance
   - `I`: CoinDCX
   - `HB`: HitBTC
   - `H`: Huobi
   - `BM`: BitMEX
+  - `OE`: OkEx
 
 ### Orders
 
 * `status`: used to denote the current status of the given order. Valid values for status include:
-  - `init`: order is just created, but not placed in the orderbook
+  - `init`: order is just created, but not placed in the orderbook (eg: stop-limit orders whose stop/trigger price hasn't reached)
   - `open`: order is successfully placed in the orderbook
   - `partially_filled`: order is partially filled
   - `filled`: order is completely filled
   - `partially_cancelled`: order is partially filled, but cancelled, thus inactive
   - `cancelled`: order is completely or partially cancelled
-  - `rejected`: order is rejected (not placed on the exchange
+  - `rejected`: order is rejected (not placed on the exchange)
+
+Among these, the open-equivalent status' includes:
+<br/>`init, open, partially_filled`
+<br/>Orders having any these status can undergo further change (like when they get filled or cancelled).
+
+And settled or closed-equivalent status' includes:
+<br/>`filled, partially_cancelled, cancelled, rejected`
+<br/> Orders having any of these status could not undergo any change.
 
 ### Margin Orders
 
@@ -182,17 +197,19 @@ You can get your API key and Secret as follows
   - `cancelled`: order is completely cancelled
   - `rejected`: order is rejected (not placed on the exchange)
   - `close`: order is completely filled
-  - `triggered`: stop varinat order triggered at specified stop price
+  - `triggered`: stop variant order triggered at specified stop price
 
+<br/>
 
 * `order_type`: used to denote the type of order to be placed. Valid values for order_type includes:
-  - `market_order`: in this order type we don't secify price; it is executed on the market price
+  - `market_order`: in this order type we don't specify price; it is executed on the market price
   - `limit_order`: in this order type we specify the price on which order is to be executed
   - `stop_limit`: it is a type of limit order whether we specify stop price and a price, once price reaches stop_price, order is placed on the given price
   - `take_profit`: it is a type of limit order whether we specify stop price and a price, once price reaches stop_price, order is placed on the given price
 
-*
-Other Terms:
+<br/>
+
+* Other Terms:
   - `target_price`: The price at which the trader plans to buy/sell or close the order position is called the Target Price. When the Target price is hit, the trade is closed and the trader’s funds are settled according to the P&L incurred. Target price feature is available if the trader checks the Bracket order checkbox.
   - `sl_price`: The price at which the trader wishes to Stop Loss is the SL Price.
   - `stop_price`: It is used in the Stop Variant order, to specify stop price
@@ -207,7 +224,7 @@ Other Terms:
   - `cancelled`: order is completely cancelled
   - `rejected`: order is rejected (not placed on the exchange)
   - `partially_cancelled`: order is partially cancelled
-  - `untriggered`: stop varinat order was not triggered
+  - `untriggered`: stop variant order was not triggered
 
 
 
@@ -579,7 +596,7 @@ m -> minutes, h -> hours, d -> days, w -> weeks, M -> months
 
 # Authentication
 
-<aside class="warning">All the Authenticated API calls use POST method. Parameters are to be passed as JSON in the request body. Every request must contain a timestamp parameter of when the request was generated.</aside>
+<aside class="warning">Common Notes:<ul><li>All the Authenticated API calls use POST method.</li><li>Parameters are to be passed as JSON in the request body.</li><li>Every request must contain a timestamp parameter of when the request was generated. This timestamp is used to validate that the request is not a very old one (due to some lag in any layer) - the request is rejected with an appropriate error if this timestamp deviates too much from the server's time at which it is received to be processed.</li></ul></aside>
 
 > To authorize, use this code:
 
@@ -1005,7 +1022,8 @@ body = {
   "market": "SNTBTC", #Replace 'SNTBTC' with your desired market pair.
   "price_per_unit": 0.03244, #This parameter is only required for a 'limit_order'
   "total_quantity": 400, #Replace this with the quantity you want
-  "timestamp": timeStamp
+  "timestamp": timeStamp,
+  "client_order_id": "2022.02.14-btcinr_1" #Replace this with the client order id you want
 }
 
 json_body = json.dumps(body, separators = (',', ':'))
@@ -1048,7 +1066,8 @@ const body = {
 	"market": "SNTBTC", //Replace 'SNTBTC' with your desired market.
 	"price_per_unit": "0.03244", //This parameter is only required for a 'limit_order'
 	"total_quantity": 400, //Replace this with the quantity you want
-	"timestamp": timeStamp
+	"timestamp": timeStamp,
+	"client_order_id": "2022.02.14-btcinr_1" //Replace this with the client order id you want
 }
 
 const payload = new Buffer(JSON.stringify(body)).toString();
@@ -1077,6 +1096,7 @@ request.post(options, function(error, response, body) {
    "orders":[
      {
         "id":"ead19992-43fd-11e8-b027-bb815bcb14ed",
+        "client_order_id": "2022.02.14-btcinr_1",
         "market":"TRXETH",
         "order_type":"limit_order",
         "side":"buy",
@@ -1107,14 +1127,15 @@ You can only have a maximum of <strong>25 open orders</strong> at a time for one
 
 ### Parameters
 
-| Name           | Required | Example      | Description                                    |
-|----------------|----------|--------------|------------------------------------------------|
-| market         | Yes      | SNTBTC       | The trading pair                               |
-| total_quantity | Yes      | 1.101        | Quantity to trade                              |
-| price_per_unit | No       | 0.082        | Price per unit (not required for market order) |
-| side           | Yes      | buy          | Specify buy or sell                            |
-| order_type     | Yes      | market_order | Order Type                                     |
-| timestamp      | Yes      | 1524211224   | When was the request generated                 |
+| Name            | Required | Example             | Description                                    |
+|-----------------|----------|---------------------|------------------------------------------------|
+| market          | Yes      | SNTBTC              | The trading pair                               |
+| total_quantity  | Yes      | 1.101               | Quantity to trade                              |
+| price_per_unit  | No       | 0.082               | Price per unit (not required for market order) |
+| side            | Yes      | buy                 | Specify buy or sell                            |
+| order_type      | Yes      | market_order        | Order Type                                     |
+| client_order_id | No       | 2022.02.14-btcinr_1 | Client order id of the order                   |
+| timestamp       | Yes      | 1524211224          | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication)                 |
 
 ## Create multiple orders
 
@@ -1155,7 +1176,8 @@ body = {
     "price_per_unit": 0.03244, #This parameter is only required for a 'limit_order'
     "total_quantity": 400, #Replace this with the quantity you want
     "timestamp": timeStamp,
-    "ecode": "I"
+    "ecode": "I",
+    "client_order_id": "2022.02.14-btcinr_1" #Replace this with the client order id you want
   },
   {
     "side": "buy",  #Toggle between 'buy' or 'sell'.
@@ -1210,7 +1232,8 @@ const body = {"orders": [{
           "price_per_unit": "466330", //This parameter is only required for a 'limit_order'
           "total_quantity": 0.01, //Replace this with the quantity you want
           "timestamp": timeStamp,
-          "ecode": "I"
+          "ecode": "I",
+          "client_order_id": "2022.02.14-btcinr_1" //Replace this with the client order id you want
         },
         {
           "side": "buy",  //Toggle between 'buy' or 'sell'.
@@ -1249,6 +1272,7 @@ request.post(options, function(error, response, body) {
    "orders":[
      {
         "id":"ead19992-43fd-11e8-b027-bb815bcb14ed",
+        "client_order_id": "2022.02.14-btcinr_1",
         "market":"TRXETH",
         "order_type":"limit_order",
         "side":"buy",
@@ -1275,15 +1299,16 @@ Use this endpoint to place a multiple orders on the exchange
 
 ### Parameters in an array of objects
 
-| Name           | Required | Example      | Description                                    |
-|----------------|----------|--------------|------------------------------------------------|
-| market         | Yes      | SNTBTC       | The trading pair                               |
-| total_quantity | Yes      | 1.101        | Quantity to trade                              |
-| price_per_unit | No       | 0.082        | Price per unit (not required for market order) |
-| side           | Yes      | buy          | Specify buy or sell                            |
-| order_type     | Yes      | market_order | Order Type                                     |
-| timestamp      | Yes      | 1524211224   | When was the request generated                 |
-| ecode          | Yes      | I            | Exchange code                                  |
+| Name            | Required | Example             | Description                                    |
+|-----------------|----------|---------------------|------------------------------------------------|
+| market          | Yes      | SNTBTC              | The trading pair                               |
+| total_quantity  | Yes      | 1.101               | Quantity to trade                              |
+| price_per_unit  | No       | 0.082               | Price per unit (not required for market order) |
+| side            | Yes      | buy                 | Specify buy or sell                            |
+| order_type      | Yes      | market_order        | Order Type                                     |
+| ecode           | Yes      | I                   | Exchange code                                  |
+| client_order_id | No       | 2022.02.14-btcinr_1 | Client order id of the order                   |
+| timestamp       | Yes      | 1524211224          | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication)                 |
 
 ##  Order status
 ```ruby
@@ -1312,6 +1337,7 @@ timeStamp = int(round(time.time() * 1000))
 
 body = {
   "id": "ead19992-43fd-11e8-b027-bb815bcb14ed", # Enter your Order ID here.
+  # "client_order_id": "2022.02.14-btcinr_1", # Enter your Client Order ID here.
   "timestamp": timeStamp
 }
 
@@ -1352,7 +1378,8 @@ const secret = "";
 
 
 const body = {
-	"id": "qwd19992-43fd-14e8-b027-bb815bnb14ed", //Replace it with your Order ID.
+	// "id": "qwd19992-43fd-14e8-b027-bb815bnb14ed", //Replace it with your Order ID.
+	"client_order_id": "2022.02.14-btcinr_1", //Replace it with your Client Order ID.
 	"timestamp": timeStamp
 }
 
@@ -1379,6 +1406,7 @@ request.post(options, function(error, response, body) {
 ```json
 {
   "id":"ead19992-43fd-11e8-b027-bb815bcb14ed",
+  "client_order_id": "2022.02.14-btcinr_1",
   "market":"TRXETH",
   "order_type":"limit_order",
   "side":"buy",
@@ -1403,10 +1431,11 @@ Use this endpoint to fetch status of any order
 
 ### Parameters
 
-| Name      | Required | Example                              | Description                    |
-|-----------|----------|--------------------------------------|--------------------------------|
-| id        | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed | The ID of the order            |
-| timestamp | Yes      | 1524211224                           | When was the request generated |
+| Name            | Required | Example                              | Description                      |
+|-----------------|----------|--------------------------------------|----------------------------------|
+| id              | No       | ead19992-43fd-11e8-b027-bb815bcb14ed | The ID of the order              |
+| client_order_id | No       | 2022.02.14-btcinr_1                  | The Client Order ID of the order |
+| timestamp       | Yes      | 1524211224                           | When was the request generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication)  |
 
 
 ##  Multiple order status
@@ -1435,7 +1464,8 @@ secret_bytes = bytes(secret)
 timeStamp = int(round(time.time() * 1000))
 
 body = {
-  "ids": ["8a2f4284-c895-11e8-9e00-5b2c002a6ff4", "8a1d1e4c-c895-11e8-9dff-df1480546936"],
+  # "ids": ["8a2f4284-c895-11e8-9e00-5b2c002a6ff4", "8a1d1e4c-c895-11e8-9dff-df1480546936"], # Array of Order ids
+  "client_order_ids": ["2022.02.14-btcinr_1", "2022.02.14-btcinr_2"], # Array of Client Order ids
   "timestamp": timeStamp
 }
 
@@ -1476,7 +1506,8 @@ const secret = "";
 
 
 const body = {
-  "ids": ["8a2f4284-c895-11e8-9e00-5b2c002a6ff4", "8a1d1e4c-c895-11e8-9dff-df1480546936"],
+  "ids": ["8a2f4284-c895-11e8-9e00-5b2c002a6ff4", "8a1d1e4c-c895-11e8-9dff-df1480546936"], // Array of Order ids
+  // "client_order_ids": ["2022.02.14-btcinr_1", "2022.02.14-btcinr_2"], // Array of Client Order ids
   "timestamp": timeStamp
 }
 
@@ -1504,6 +1535,7 @@ request.post(options, function(error, response, body) {
 [
   {
     "id":"ead19992-43fd-11e8-b027-bb815bcb14ed",
+    "client_order_id": "2022.02.14-btcinr_1",
     "market":"TRXETH",
     "order_type":"limit_order",
     "side":"buy",
@@ -1529,10 +1561,11 @@ Use this endpoint to fetch status of any order
 
 ### Parameters
 
-| Name | Required | Example        | Description        |
-|------|----------|----------------|--------------------|
-| ids  | Yes      | ["id1", "id3"] | Array of order IDs |
-| timestamp | Yes      | 1524211224                     | When was the request generated |
+| Name             | Required | Example                                                                          | Description        |
+|------------------|----------|----------------------------------------------------------------------------------|--------------------|
+| ids              | Yes      | ["ead19992-43fd-11e8-b027-bb815bcb14ed", "8a1d1e4c-c895-11e8-9dff-df1480546936"] | Array of order IDs |
+| client_order_ids | No       | ["2022.02.14-btcinr_1", "2022.02.14-btcinr_2"]                                   | Array of client order IDs         |
+| timestamp        | Yes      | 1524211224                                                                       | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 
@@ -1633,6 +1666,7 @@ request.post(options, function(error, response, body) {
 [
   {
     "id":"ead19992-43fd-11e8-b027-bb815bcb14ed",
+    "client_order_id": "2022.02.14-btcinr_1",
     "market":"TRXETH",
     "order_type":"limit_order",
     "side":"buy",
@@ -1662,7 +1696,7 @@ Use this endpoint to fetch active orders
 |-----------|----------|------------|--------------------------------|
 | market    | Yes      | SNTBTC     |                                |
 | side      | No       | buy        |                                |
-| timestamp | Yes      | 1524211224 | When was the request generated |
+| timestamp | Yes      | 1524211224 | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 ## Account Trade history
 ```ruby
@@ -1783,7 +1817,7 @@ Use this endpoint to fetch trades associated with your account
 | limit   | No       | 100     | Default: 500, Min: 1, Max: 5000                                                       |
 | from_id | No       | 28473   | Trade ID after which you want the data. If not supplied, trades in ascending order will be returned |
 | sort    | No | asc | Specify asc or desc to get trades in ascending or descending order, default: asc |
-| timestamp| Yes | 1524211224 | When was the request generated |
+| timestamp| Yes | 1524211224 | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 
@@ -1897,7 +1931,7 @@ Use this endpoint to fetch active orders count
 |-----------|----------|------------|--------------------------------|
 | market    | Yes      | SNTBTC     |                                |
 | side      | No       | buy        |                                |
-| timestamp | Yes      | 1524211224 | When was the request generated |
+| timestamp | Yes      | 1524211224 | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 ##  Cancel all
@@ -2010,7 +2044,7 @@ Use this endpoint to cancel multiple active orders in a single API call
 |-----------|----------|------------|--------------------------------|
 | market    | Yes      | SNTBTC     |                                |
 | side      | No       | buy        |                                |
-| timestamp | Yes      | 1524211224 | When was the request generated |
+| timestamp | Yes      | 1524211224 | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 Sending side param is optional. You may cancel all the sell orders of SNTBTC by sending
 <br>
@@ -2238,7 +2272,7 @@ Use this endpoint to cancel an active orders
 | Name      | Required | Example                              | Description                    |
 |-----------|----------|--------------------------------------|--------------------------------|
 | id        | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed | The ID of the order            |
-| timestamp | Yes      | 1524211224                           | When was the request generated |
+| timestamp | Yes      | 1524211224                           | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 
@@ -2360,7 +2394,7 @@ Use this endpoint to edit the price of an active order
 |----------------|----------|--------------------------------------|--------------------------------|
 | id             | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed | The ID of the order            |
 | price_per_unit | Yes      | 123.45                               | New Price for the order        |
-| timestamp      | Yes      | 1524211224                           | When was the request generated |
+| timestamp      | Yes      | 1524211224                           | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 
@@ -2504,7 +2538,7 @@ Use this endpoint to fetch orders and its details
 
 | Name  | Type      | Required | Example            | Description                    |
 |------|-----|----------|--------------------|--------------------------------|
-| timestamp      | number | Yes      | 1524211224    | When was the request generated |
+| timestamp      | number | Yes      | 1524211224    | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 
@@ -2634,7 +2668,7 @@ Use this endpoint to lend specified currency on the exchange.
 | currency_short_name         | string | Yes      | XRP      | The lending currency                         |
 | amount       | number | Yes      | 11       | Quantity to lend                            |
 | duration     | number |Yes      | 20           | The Time period for which you want to lend the currency in days|
-| timestamp      | number | Yes      | 1524211224   | When was the request generated                 |
+| timestamp      | number | Yes      | 1524211224   | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication)                 |
 
 
 
@@ -2760,7 +2794,7 @@ Use this endpoint to settle lend order.
 | Name  | Type      | Required | Example                              | Description                    |
 |------|-----|----------|--------------------------------------|--------------------------------|
 | id        | string | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed | The ID of the order            |
-| timestamp | number | Yes      | 1524211224                           | When was the request generated |
+| timestamp | number | Yes      | 1524211224                           | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 # Margin Order
 <aside class="notice">
@@ -2955,7 +2989,7 @@ You can only have a maximum of <strong>10 open orders</strong> at a time for one
 | trailing_sl    | boolean | No       | true         | To place order with Trailing Stop Loss             |
 | target_price   | number |No       | 0.082        | The price to buy/sell or close the order position   |
 | ecode          | string |Yes      | B            | Exchange code in which the order will be placed|
-| timestamp      | number | Yes      | 1524211224   | When was the request generated                 |
+| timestamp      | number | Yes      | 1524211224   | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication)                 |
 
 ## Cancel Order
 <aside class="notice">Any order with <b>order_status</b> among the following can only be cancelled: <br/>
@@ -3072,7 +3106,7 @@ Use this endpoint to cancel any order.
 | Name  | Type      | Required | Example                              | Description                    |
 |------|-----|----------|--------------------------------------|--------------------------------|
 | id        | string | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed | The ID of the order            |
-| timestamp | number | Yes      | 1524211224                           | When was the request generated |
+| timestamp | number | Yes      | 1524211224                           | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 ## Exit
@@ -3191,7 +3225,7 @@ Use this endpoint to exit any order.
 | Name  | Type      | Required | Example                              | Description                    |
 |------|-----|----------|--------------------------------------|--------------------------------|
 | id        | string | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed | The ID of the order            |
-| timestamp | number | Yes      | 1524211224                           | When was the request generated |
+| timestamp | number | Yes      | 1524211224                           | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 ## Edit Target
 <aside class="notice">You can update target price only if order has 0 or 1 target order. For the multiple open targets refer- <strong><a href="#edit-price-of-target-order">Edit Price of Target Order</a></strong> section</aside>
@@ -3310,7 +3344,7 @@ Use this endpoint to edit the target price of any order.
 |------|----------|----------------------------------------|--------------------|---|
 | id   | string | Yes      | 8a2f4284-c895-11e8-9e00-5b2c002a6ff4 | ID of the order to edit |
 | target_price | number  | Yes       | 0.082        | The new price to buy/sell or close the order position at  |
-| timestamp | number     | Yes      | 1524211224   | When was the request generated     |
+| timestamp | number     | Yes      | 1524211224   | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication)     |
 
 
 ## Edit Price of Target Order
@@ -3430,7 +3464,7 @@ Use this endpoint to edit price of internal target order.
 | id        | string | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed     |                                |
 | target_price   | number |  Yes       | 0.082        | The new price to buy/sell or close the order position at  |
 | itpo_id   | string | Yes      | 164968 |ID of internal order to edit |
-| timestamp | number | Yes      | 1524211224 | When was the request generated |
+| timestamp | number | Yes      | 1524211224 | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 ## Edit SL Price
 <aside class="notice">Only for orders where <b>trailing_sl is false</b></aside>
@@ -3542,7 +3576,7 @@ Use this endpoint to edit stop loss price of a bracket order.
 |------|---|----------|---------|-----------------------------------------------------|
 | id      | string | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed     |  ID of Margin Order                                      |
 | sl_price| number | Yes      | 0.082         | The price to Stop Loss at|
-| timestamp| number | Yes     | 1524211224    | When was the request generated |
+| timestamp| number | Yes     | 1524211224    | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 ## Edit SL Price of Trailing Stop Loss
@@ -3655,7 +3689,7 @@ Use this endpoint to edit stop loss price of a trailing stop loss order.
 |------|---|----------|---------|-----------------------------------------------------|
 | id      | string | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed     |  ID of Margin Order                                      |
 | sl_price | number      | Yes       | 0.082        | The new price to Stop Loss at                |
-| timestamp| number | Yes     | 1524211224 | When was the request generated |
+| timestamp| number | Yes     | 1524211224 | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 ## Add Margin
@@ -3766,7 +3800,7 @@ Use this endpoint to add a particular amount to your margin order, decreasing th
 |------|---|----------|---------|-----------------------------------------------------|
 | id      | string | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed     |  ID of Margin Order                                      |
 | amount | number | Yes     | 0.06                                     | Amount to add in the margin to decrease effective leverage |
-| timestamp| number | Yes     | 1524211224 | When was the request generated |
+| timestamp| number | Yes     | 1524211224 | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 ## Remove Margin
 ```ruby
@@ -3876,7 +3910,7 @@ Use this endpoint to remove a particular amount from your Margin order, increasi
 |------|---|----------|---------|-----------------------------------------------------|
 | id      | string | Yes      | ead19992-43fd-11e8-b027-bb815bcb14ed     |  ID of Margin Order                                      |
 | amount | number | Yes     | 0.06                                     | Amount to remove from the margin to increase effective leverage |
-| timestamp| number | Yes     | 1524211224 | When was the request generated |
+| timestamp| number | Yes     | 1524211224 | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 ##  Fetch Orders
@@ -3907,8 +3941,10 @@ secret_bytes = bytes(secret)
 timeStamp = int(round(time.time() * 1000))
 
 body = {
-  "details": true,
+  "details": True,
   "market": "LTCBTC",
+  "status":"close",
+  "size":20,
   "timestamp": timeStamp
 }
 
@@ -3930,7 +3966,6 @@ print(data)
 ```
 
 ```shell
-
 ```
 
 ```javascript
@@ -3951,6 +3986,8 @@ const secret = "";
 const body = {
   "details": true,
   "market": "LTCBTC",
+  "status":"open",
+  "size":20,
   "timestamp": timeStamp
 }
 
@@ -4086,10 +4123,11 @@ Use this endpoint to fetch orders and optionally its details which include all b
 
 | Name  | Type      | Required | Example            | Description                    |
 |------|-----|----------|--------------------|--------------------------------|
-| market         | string | No      | XRPBTC         | The trading pair                |
+| market         | string | No      | XRPBTC         | The trading pair, default: Orders for all market               |
 | details        | boolean | No      | false          | Whether you want detailed information or not, default: false            |
-| status         | string | No       | open,close | The ID of the order            |
-| timestamp      | number | Yes      | 1524211224    | When was the request generated |
+| status         | string | No       | init,open,close,rejected,cancelled,<br/><br/>partial_entry,partial_close,triggered | The status of the order, default: All orders           |
+| size           | number | No       | 20 | Number of records per page, default: 10|
+| timestamp      | number | Yes      | 1524211224    | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 
 ##  Query Order
@@ -4142,7 +4180,6 @@ print(data)
 ```
 
 ```shell
-
 ```
 
 ```javascript
@@ -4251,7 +4288,7 @@ Use this endpoint to query specific order and optionally its details.
 |------|-----|----------|--------------------|--------------------------------|
 | id         | string | Yes      | 30b5002f-d9c1-413d-8a8d-0fd32b054c9c         | Id of the order           |
 | details        | boolean | No      | false          | Whether you want detailed information or not, default: false            |
-| timestamp      | number | Yes      | 1524211224    | When was the request generated |
+| timestamp      | number | Yes      | 1524211224    | Timestamp at which the request was generated [(see 'Common Notes' under 'Authentication' heading to read more)](http://192.168.1.10:4567/#authentication) |
 
 # Pagination
 
@@ -4381,11 +4418,6 @@ const socket = io.connect(socketEndpoint, {
   origin: '*',
 });
 
-//Join Channel
-socket.emit('join', {
-  'channelName': "channelName",
-});
-
 //Listen update on channelName
 socket.on('eventName', (response) => {
   console.log(response.data);
@@ -4396,6 +4428,10 @@ socket.connect();
 // client-side
 socket.on("connect", () => {
   console.log(socket.id,'coindcx'); // x8WIv7-mJelg7on_ALbx
+   //Join Channel
+  socket.emit('join', {
+    'channelName': "channelName",
+  });
 });
 
 // leave a channel
@@ -4504,7 +4540,7 @@ socket.on("new-trade", (response) => {
 
 ```json
 {
-  "T": 1545896665076.92,
+  "T": 1545896665076,
   "p": 0.9634e-4,
   "q": 0.1e1,
   "s": "XRPBTC",
@@ -4556,7 +4592,7 @@ sio.emit('join', { 'channelName': 'coindcx', 'authSignature': signature, 'apiKey
 # Listen update on eventName
 @sio.on('eventName')
 def on_message(response):
-    print(response.data)
+    print(response["data"])
 
 # leave a channel
 sio.emit('leave', { 'channelName' : 'coindcx' })
@@ -4565,7 +4601,15 @@ sio.emit('leave', { 'channelName' : 'coindcx' })
 
 ```javascript
 
+//For commonJS(NPM)
+const io = require("socket.io-client");
+const crypto = require('crypto');
+
+/// ES6 import or TypeScript
 import io from 'socket.io-client';
+import crypto from 'crypto';
+
+
 const socketEndpoint = "wss://stream.coindcx.com";
 
 //connect to server.
@@ -4578,16 +4622,20 @@ const key = "key";
 
 
 const body = { channel: "coindcx" };
-const payload = new Buffer(JSON.stringify(body)).toString();
+const payload = Buffer.from(JSON.stringify(body)).toString();
 const signature = crypto.createHmac('sha256', secret).update(payload).digest('hex')
 
-//Join channel
-socket.emit('join', {
-  'channelName': "coindcx",
-  'authSignature': signature,
-  'apiKey' : key
-});
 
+
+//Listen to connect event
+socket.on("connect", () => {
+ //Join channel
+  socket.emit('join', {
+    'channelName': "coindcx",
+    'authSignature': signature,
+    'apiKey' : key
+  });
+});
 
 //Listen update on eventName
 socket.on("eventName", (response) => {
@@ -4599,6 +4647,8 @@ socket.on("eventName", (response) => {
 socket.emit('leave', {
   'channelName': 'coindcx'
 });
+
+// NOTE : Need to use V2 Socket.io-client
 ```
 
 ## Balances
@@ -4620,8 +4670,8 @@ socket.emit('leave', {
 ```python
 @sio.on('balance-update')
 def on_message(response):
-  if response.event == 'balance-update':
-    print(response.data)
+  if response["event"] == 'balance-update':
+    print(response["data"])
 ```
 
 ```javascript
@@ -4652,7 +4702,8 @@ socket.on("balance-update", (response) => {
 
 ### Response
 <ul>
-  <li>o is client order id / system generated order id</li>
+  <li>o is system generated order id</li>
+  <li>c is client order id</li>
   <li>t is trade id</li>
   <li>s is symbol/market (LTCBTC)</li>
   <li>p is price</li>
@@ -4667,7 +4718,7 @@ socket.on("balance-update", (response) => {
 ```python
 @sio.on('trade-update')
 def on_message(response):
-    print(response.data)
+    print(response["data"])
 ```
 
 ```javascript
@@ -4682,11 +4733,12 @@ socket.on("trade-update", (response) => {
 ```json
 [{
   "o": "28c58ee8-09ab-11e9-9c6b-8f2ae34ea8b0",
+  "c": "2022.02.14-btcinr_1",
   "t": "17105",
   "s": "XRPBTC",
   "p": "0.00009634",
   "q": "1.0",
-  "T": 1545896665076.92,
+  "T": 1545896665076,
   "m": true,
   "f": "0.000000009634",
   "e": "I",
@@ -4700,6 +4752,91 @@ socket.on("trade-update", (response) => {
 # API call limits
 We have rate limits in place to facilitate availability of our resources to a wider set of people. Typically you can place around 4 orders per second. The exact number depends on the server load.
 In aggregate, you may call `https//api.coindcx.com` not more than 10 times per second. -->
+
+## Order Updates
+
+### Definitions
+<ul>
+  <li><strong>Channel:</strong> coindcx</li>
+  <li><strong>Event:</strong> order-update</li>
+</ul>
+
+### Response
+<ul>
+<li><code>id</code>: unique order identifier (uuid)</li>
+<li><code>client_order_id</code>: client order id of the order</li>
+<li><code>order_type</code>: the order type</li>
+<li><code>side</code>: whether the order is a buy order or a sell order</li>
+<li><code>status</code>: the current status</li>
+<li><code>fee_amount</code>: total fee amount charged so far (in base-currency)</li>
+<li><code>fee</code>: deprecated - do not refer - will be removed soon</li>
+<li><code>maker_fee</code>: the fee (in percentage) to be charged for maker-trades for this order</li>
+<li><code>taker_fee</code>: the fee (in percentage) to be charged for taker-trades for this order</li>
+<li><code>total_quantity</code>: total quantity</li>
+<li><code>remaining_quantity</code>: pending (unfilled/uncancelled) quantity</li>
+<li><code>source</code>: deprecated - do not refer - will be removed soon</li>
+<li><code>base_currency_name</code>: deprecated - do not refer - will be removed soon</li>
+<li><code>target_currency_name</code>: deprecated - do not refer - will be removed soon</li>
+<li><code>base_currency_short_name</code>: deprecated - do not refer - will be removed soon</li>
+<li><code>target_currency_short_name</code>: deprecated - do not refer - will be removed soon</li>
+<li><code>base_currency_precision</code>: deprecated - do not refer - will be removed soon</li>
+<li><code>target_currency_precision</code>: deprecated - do not refer - will be removed soon</li>
+<li><code>avg_price</code>: avg-execution price so far</li>
+<li><code>price_per_unit</code>: specified limit price</li>
+<li><code>stop_price</code>: specified stop price (applicable for stop-variant orders)</li>
+<li><code>market</code>: symbol</li>
+<li><code>time_in_force</code>: just contains one value for now, which is <code>good_till_cancel</code></li>
+<li><code>created_at</code>: the timestamp for order creation</li>
+<li><code>updated_at</code>: the latest timestamp specifying when the order was updated</li>
+</ul>
+
+```python
+@sio.on('order-update')
+def on_message(response):
+  print(response["data"])
+```
+
+```javascript
+socket.on("order-update", (response) => {
+  console.log(response.data);
+});
+```
+
+
+> Order update response:
+
+```json
+[
+  {
+    "id": "axxxxxxa-axxa-axxa-axxa-axxxxxxxxxxa",
+    "client_order_id": "2022.02.14-btcinr_1",
+    "order_type": "limit_order",
+    "side": "buy",
+    "status": "open",
+    "fee_amount": 0,
+    "fee": 0.1,
+    "maker_fee": 0.1,
+    "taker_fee": 0.1,
+    "total_quantity": 0.0005,
+    "remaining_quantity": 0.0005,
+    "source": "web",
+    "base_currency_name": "Indian Rupee",
+    "target_currency_name": "Bitcoin",
+    "base_currency_short_name": "INR",
+    "target_currency_short_name": "BTC",
+    "base_currency_precision": 2,
+    "target_currency_precision": 5,
+    "avg_price": 0,
+    "price_per_unit": 3015016.03,
+    "stop_price": 0,
+    "market": "BTCINR",
+    "time_in_force": "good_till_cancel",
+    "created_at": 1647418697307,
+    "updated_at": 1647418697307
+  }
+]
+```
+
 
 ## Bracket Order Trades
 
